@@ -1,0 +1,35 @@
+---
+import type { GetStaticPaths } from "astro";
+import MainLayout from "@layouts/MainLayout.astro";
+import { type PokemonList } from "@interfaces/pokemonList.response";
+import PokemonCard from "@components/pokemons/PokemonCard.astro";
+
+const { pokemonId } = Astro.params;
+
+export const getStaticPaths = (async () => {
+  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+  const data = (await response.json()) as PokemonList;
+
+  return data.results.map((pokemon) => {
+    const id = pokemon.url.split("/").at(-2);
+
+    return {
+      params: {
+        pokemonId: id,
+      },
+      props: {
+        pokemon,
+      },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { pokemon } = Astro.props;
+---
+
+<MainLayout title={`Pokemon | ${pokemonId}`}>
+  <PokemonCard
+    name={pokemon.name}
+    url={pokemon.url}
+  />
+</MainLayout>
