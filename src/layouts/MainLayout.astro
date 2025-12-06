@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { siteInfo } from "../const/site-info";
+import Navbar from "@components/shared/Navbar.astro";
 
 interface Props {
   title?: string;
@@ -61,7 +62,11 @@ const {
       }
     </style>
   </head>
-  <body class="bg-slate-800 m-auto max-w-3xl">
-    <slot />
+  <body class="bg-slate-800 text-slate-100 w-full">
+    <Navbar />
+
+    <main class="mt-10 mx-auto max-w-3xl">
+      <slot />
+    </main>
   </body>
 </html>
